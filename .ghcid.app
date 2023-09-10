@@ -1,0 +1,1 @@
+--command="cabal new-repl hsprjup:exe:hsprjup-exe -f ghcidappwithtest" --test="TestMain.main" --setup=":load test/Spec.hs"

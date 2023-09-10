@@ -1,0 +1,206 @@
+cabal-version:       3.0
+name:                hsprjup
+version:             0.0.1.0
+synopsis:            cook haskell project based on template.
+description:         cook haskell project based on template.
+homepage:            https://github.com/hughjfchen/hsprjup
+bug-reports:         https://github.com/hughjfchen/hsprjup/issues
+license:             MIT
+license-file:        LICENSE
+author:              Hugh JF Chen
+maintainer:          Hugh JF Chen <hugh.jf.chen@gmail.com>
+copyright:           2023 Hugh JF Chen
+category:            CommandLine
+build-type:          Simple
+extra-doc-files:     README.md
+                     CHANGELOG.md
+tested-with:         GHC == 9.2.8
+
+source-repository head
+  type:                git
+  location:            https://github.com/hughjfchen/hsprjup.git
+
+flag ghcidlibwithtest
+  description: provide test support with the lib for ghcid
+  default: False
+
+flag ghcidappwithtest
+  description: provide test support with the app for ghcid
+  default: False
+
+common c-base
+  build-depends: base >= 4.11.1.0 && < 5
+
+common c-relude
+  build-depends: relude
+  mixins:        base hiding (Prelude)
+                 , relude (Relude as Prelude)
+                 , relude
+
+common c-basic-pkgs
+  build-depends: text
+                 , bytestring
+                 , mtl
+                 , transformers
+                 , containers
+                 , unordered-containers
+                 , exceptions
+
+common c-io
+  build-depends: filepath
+                 , path
+                 , path-io
+
+common c-test
+  build-depends: hspec
+                 , hedgehog
+                 , hspec-hedgehog
+
+common c-bench
+  build-depends: gauge
+
+common c-app
+  build-depends: optparse-applicative ^>= 0.16.1.0
+                 , unix-compat
+                 , time
+                 , Glob
+
+common c-parse
+  build-depends: parsec
+                 , megaparsec
+
+common c-tophat
+  build-depends: tophat
+
+common c-ghcidlibwithtest
+  if flag(ghcidlibwithtest)
+    import: c-test
+
+common c-ghcidappwithtest
+  if flag(ghcidappwithtest)
+    import: c-test
+
+common c-options
+  ghc-options:         -Wall
+                       -Wcompat
+                       -Widentities
+                       -Wincomplete-uni-patterns
+                       -Wincomplete-record-updates
+                       -Wredundant-constraints
+                       -Wnoncanonical-monad-instances
+  if impl(ghc >= 8.2)
+    ghc-options:       -fhide-source-paths
+  if impl(ghc >= 8.4)
+    ghc-options:       -Wmissing-export-lists
+                       -Wpartial-fields
+  if impl(ghc >= 8.8)
+    ghc-options:       -Wmissing-deriving-strategies
+  if impl(ghc >= 8.10)
+    ghc-options:       -Wunused-packages
+
+common c-language
+  default-language:    Haskell2010
+
+common c-extensions
+  default-extensions:  ConstraintKinds
+                       DeriveAnyClass
+                       DeriveFunctor
+                       DeriveDataTypeable
+                       DeriveGeneric
+                       DerivingStrategies
+                       FlexibleContexts
+                       FlexibleInstances
+                       GeneralizedNewtypeDeriving
+                       TemplateHaskell
+                       InstanceSigs
+                       KindSignatures
+                       LambdaCase
+                       MultiParamTypeClasses
+                       OverloadedStrings
+                       RecordWildCards
+                       ScopedTypeVariables
+                       StandaloneDeriving
+                       TupleSections
+                       TypeApplications
+                       ViewPatterns
+                       PatternSynonyms
+
+library
+  import:              c-base
+                     , c-basic-pkgs
+                     , c-parse
+                     , c-tophat
+                     , c-ghcidlibwithtest
+                     , c-relude
+                     , c-options
+                     , c-language
+                     , c-extensions
+  hs-source-dirs:      src
+  exposed-modules:     Core.Types
+                     , Core.Hsprjup
+                     , Core.MyError
+                     , Has
+                     , As
+                     , Error
+                     , MonadStack
+                     , Capability.Hsprjup
+
+executable hsprjup
+  import:              c-base
+                     , c-basic-pkgs
+                     , c-parse
+                     , c-io
+                     , c-app
+                     , c-ghcidappwithtest
+                     , c-relude
+                     , c-options
+                     , c-language
+                     , c-extensions
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  other-modules:       Paths_hsprjup
+                     , AppM
+                     , AppEnv
+                     , AppError
+                     , CmdLine
+                     , AppCapability.Hsprjup
+  build-depends:       hsprjup
+  ghc-options:         -threaded
+                       -rtsopts
+                       -with-rtsopts=-N
+
+test-suite hsprjup-test
+  import:              c-base
+                     , c-basic-pkgs
+                     , c-parse
+                     , c-test
+                     , c-relude
+                     , c-options
+                     , c-language
+                     , c-extensions
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       hsprjup
+  ghc-options:         -threaded
+                       -rtsopts
+                       -with-rtsopts=-N
+  other-modules:       Paths_hsprjup
+
+benchmark hsprjup-benchmark
+  import:              c-base
+                     , c-basic-pkgs
+                     , c-parse
+                     , c-bench
+                     , c-relude
+                     , c-options
+                     , c-language
+                     , c-extensions
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      benchmark
+  main-is:             Main.hs
+  build-depends:       gauge
+                     , hsprjup
+  ghc-options:         -threaded
+                       -rtsopts
+                       -with-rtsopts=-N

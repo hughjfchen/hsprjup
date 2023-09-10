@@ -1,0 +1,13 @@
+cradle:
+  cabal:
+    - path: "./src"
+      component: "lib:hsprjup"
+
+    - path: "./app"
+      component: "hsprjup:exe:hsprjup"
+
+    - path: "./test"
+      component: "hsprjup:test:hsprjup-test"
+
+    - path: "./benchmark"
+      component: "hsprjup:bench:hsprjup-benchmark"
