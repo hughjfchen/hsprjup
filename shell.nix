@@ -29,7 +29,9 @@ let
         cabal =
           defaultPlatformProject.pkgs.haskell-nix.cabal-install.ghc928.version;
         hasktags = "latest";
-        haskell-language-server = "latest";
+        hlint = "latest";
+        fourmolu = "latest";
+        #haskell-language-server = "latest";
       };
       # See overlays/tools.nix for more details
 

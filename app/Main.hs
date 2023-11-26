@@ -9,7 +9,7 @@ import Core.Hsprjup
 
 main :: IO ()
 main = do
-  appEnv <- AppEnv { appEnvCommand = Start }
+  appEnv <- pure $ AppEnv { appEnvCommand = Start }
 
   case appEnvCommand appEnv of
     Start -> defaultStartCommand
@@ -17,6 +17,6 @@ main = do
     Status -> defaultStatusCommand
     Unknown -> error "Unknown command, it must be start, stop or status."
   where
-    defaultStartCommand = putStrLn "Please implement the start command" 
-    defaultStopCommand = putStrLn "Please implement the stop command" 
-    defaultStatusCommand = putStrLn "Please implement the status command" 
+    defaultStartCommand = putStrLn "Please implement the start command"
+    defaultStopCommand = putStrLn "Please implement the stop command"
+    defaultStatusCommand = putStrLn "Please implement the status command"

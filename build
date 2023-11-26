@@ -1,2 +1,12 @@
 #!/usr/bin/env bash
+
+# prepare the git rev
+GIT_REV=$(GIT_DIR="$(dirname "$0")"/.git git rev-parse HEAD)
+sed -i "s:PLACEHOLDER_TO_BE_REPLACED_BY_REAL_GIT_REV_BEFORE_BUILD:$GIT_REV:g" "$(dirname "$0")"/app/GitRev.hs
+
 nix-build "$(dirname "$0")"/cross-build.nix
+
+
+# now switch back to the rev placeholder
+sed -i "s:$GIT_REV:PLACEHOLDER_TO_BE_REPLACED_BY_REAL_GIT_REV_BEFORE_BUILD:g" "$(dirname "$0")"/app/GitRev.hs
+

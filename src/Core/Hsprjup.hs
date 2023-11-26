@@ -7,10 +7,8 @@ Core business logic here.
 -}
 
 module Core.Hsprjup
-       ( 
+       (
        ) where
-
-import Core.Types
 
 import Has
 import As

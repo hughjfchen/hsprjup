@@ -1,4 +1,3 @@
-
 module Core.Types
   ( -- | project
     emptyProject,
@@ -26,7 +25,7 @@ data ProjectFeature
   = DevOpsOnly (NonEmpty DevOpsFeature)
   | AppOnly AppArchitecture (NonEmpty AppFeature)
   | FullFeature AppArchitecture (NonEmpty AppFeature) (NonEmpty DevOpsFeature)
-  deriving stock (Eq, Show, Typeable, Generic)
+    deriving stock (Eq, Show, Typeable, Generic)
 
 data Project
   = EmptyProject
@@ -36,7 +35,7 @@ data Project
       ProjectInitVersion
       ProjectDescription
       ProjectFeature
-  | ProjectGroup (NonEmpty ProjectFeature)
+  | ProjectGroup (NonEmpty Project)
   deriving stock (Eq, Show, Typeable, Generic)
 
 data AppFeature
@@ -50,6 +49,7 @@ data CommonFeature
   | ConfigParsing
   | Persistent
   | Monitoring
+  | Security
   deriving stock (Eq, Show, Typeable, Generic)
 
 data DomainFeature
@@ -63,7 +63,6 @@ data Phase = Development | Test | Production
 
 data Environment = Environment Phase
   deriving stock (Eq, Show, Typeable, Generic)
-
 
 data Config = Config Environment
   deriving stock (Eq, Show, Typeable, Generic)
@@ -103,13 +102,41 @@ cabalFileMeta =
   makeTemplate
     ( embedConst ("version: " <> "0.0.1.0")
       >>> embedConst ("name: " <> "myname")
+      >>> embedConst ("description: " <> "my project")
+      >>> embedConst ("category: " <> "Command Line")
+      >>> embedConst ("here: " <> "there")
+      >>> embedConst ("whof" <> "whom")
+      >>> embedConst ("who" <> "am I")
+      >>> embedConst ("That" <> "This")
+      >>> embedConst "I am your boss"
+      >>> embedConst "Are you OK?"
+      >>> embedConst "fake news."
+      >>> embedConst "also fake news"
+      >>> embedConst "and can the test be run automacially?"
+      >>> embedConst "oh, this is fine."
+      >>> embedConst "fake news is also news."
+      >>> embedConst "fake, it is fake"
+      >>> embedConst "Hey, you, give me your hands."
+      >>> embedConst ("Vt World" <> "Vi World")
     )
 
 cabalFileCommon :: Template Int Text
 cabalFileCommon =
   makeTemplate
     ( embedConst ("version: " <> "0.0.1.0")
-        >>> embedConst ("name: " <> "myname")
+      >>> embedConst ("name: " <> "myname")
+      >>> embedConst ("author: " <> "A Great Guy")
+      >>> embedConst ("category: " <> "Network")
+      >>> embedShow (const @Text "Yes")
+      >>> embedConst ("Who can I talk to?" <> "I'm the one, the only one.")
+      >>> embedConst ("description: " <> "A great library")
+      >>> embedConst "a great story"
+      >>> embedConst ("descript" <> "hehehehhe")
+      >>> embedConst "Here"
+      >>> embedConst "There"
+      >>> embedConst ("You" <> "Me")
+      >>> embedConst "How are you?"
+      >>> embedConst "I am the one."
     )
 
 cabalFile :: Template Int Text
