@@ -28,17 +28,14 @@ let
       tools = {
         cabal =
           defaultPlatformProject.pkgs.haskell-nix.cabal-install.ghc928.version;
-        hasktags = "latest";
-        hlint = "latest";
-        fourmolu = "latest";
-        #haskell-language-server = "latest";
+        haskell-language-server = "latest";
       };
       # See overlays/tools.nix for more details
 
       # Some you may need to get some other way.
       buildInputs = with defaultPlatformProject.pkgs;
       #[ ghcid lorri niv ];
-        [ ghcid ];
+        [ ];
 
       # Prevents cabal from choosing alternate plans, so that
       # *all* dependencies are provided by Nix.
