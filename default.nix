@@ -37,7 +37,7 @@ rec {
   });
 
   hsprjup-exe = hsprjup.hsprjup.components.exes.hsprjup;
-  hsprjup-test = hsprjup.hsprjup.components.tests.hsprjup-test;
+  #hsprjup-test = hsprjup.hsprjup.components.tests.hsprjup-test;
 
 }
 

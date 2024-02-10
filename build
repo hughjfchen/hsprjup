@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# is the working tree clean?
+[ -n "$(git status --porcelain=v1 2>/dev/null)" ] && echo "There're some uncommitted changes. Abort" && exit 111
+
 # prepare the git rev
 GIT_REV=$(GIT_DIR="$(dirname "$0")"/.git git rev-parse HEAD)
 sed -i "s:PLACEHOLDER_TO_BE_REPLACED_BY_REAL_GIT_REV_BEFORE_BUILD:$GIT_REV:g" "$(dirname "$0")"/app/GitRev.hs
