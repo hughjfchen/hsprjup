@@ -33,6 +33,8 @@
       flake = pkgs.hsprjupProject.flake {
         # This adds support for `nix build .#js-unknown-ghcjs:hsprjup:exe:hsprjup`
         # crossPlatforms = p: [p.ghcjs];
+        # for fully static binary
+        crossPlatforms = p: [p.musl64];
       };
     in flake // {
       # Built by `nix build .`
