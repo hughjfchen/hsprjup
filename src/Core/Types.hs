@@ -1,3 +1,4 @@
+{-# LANGUAGE GADTs #-}
 module Core.Types
   ( -- | project
     emptyProject,
@@ -61,10 +62,12 @@ data DomainFeature
 data Phase = Development | Test | Production
   deriving stock (Eq, Show, Typeable, Generic)
 
-data Environment = Environment Phase
+data Environment where
+  Environment :: Phase -> Environment
   deriving stock (Eq, Show, Typeable, Generic)
 
-data Config = Config Environment
+data Config where
+  Config :: Environment -> Config
   deriving stock (Eq, Show, Typeable, Generic)
 
 data GHCVersion = GHC8107 | GHC928 | GHC946 | GHC962
@@ -79,7 +82,8 @@ data BuildFeature = Build GHCVersion NixRelease
 data DeployFeature = Deploy Config BuildFeature
   deriving stock (Eq, Show, Typeable, Generic)
 
-data DevelopFeature = Develop BuildFeature
+data DevelopFeature where
+  Develop :: BuildFeature -> DevelopFeature
   deriving stock (Eq, Show, Typeable, Generic)
 
 data DevOpsFeature
