@@ -16,7 +16,7 @@ import Tophat
 
 type ProjectName = Text
 
-type MyMyMyMyMyMyMyName = Text
+type MyMyMyMyMyMyMyMyName = Text
 
 type ProjectAuthor = Text
 
