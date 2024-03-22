@@ -18,6 +18,8 @@ type ProjectName = Text
 
 type ProjectAuthor = Text
 
+type MyName = Text
+
 type ProjectInitVersion = Text
 
 type ProjectDescription = Text
